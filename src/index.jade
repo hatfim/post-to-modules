@@ -1,0 +1,422 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    title Post to Modules
+
+    link(rel='stylesheet', type='text/css', href='build/build.css')
+
+  body
+
+    article
+
+      section
+      section(data-bespoke-backdrop='lego')
+        h2 Post
+        h3 &mdash; to &mdash;
+        h2 Modules
+
+      section
+        h3 part 1
+        img(src='images/postcss.png',style='height: 50%')
+
+      section
+        h2 Whats is PostCSS
+
+      section
+        blockquote
+          p PostCSS is a tool for transforming styles with JS plugins. These plugins can support variables and mixins, transpile future CSS syntax, inline images, and more.
+        p
+          span #[a(href='https://github.com/postcss/postcss') https://github.com/postcss/postcss]
+
+      section
+        h2 So Whats PostCSS do?
+
+      section
+        p PostCSS can do the same work as preprocessors like Sass, Less, and Stylus. But PostCSS is modular, 3-30 times faster, and much more powerful.
+
+      section
+        h2 PostCSS
+        h3 &mdash; vs &mdash;
+        h2 Preprocessors
+
+      section
+        h2 CSS Pre-processors
+        ul
+          li Monolithic
+          li Code inside css template
+
+      section
+        h2 PostCSS
+        ul
+          li Modular
+          li All feature by plugins
+          li JS transform CSS
+
+      section
+        h2 How to use PostCSS
+        ul
+          li Add PostCSS to your build tool.
+          li Select plugins from the list below and add them to your PostCSS process.
+
+      section
+        pre.language-javascript(style='font-size: 14px')
+          code.
+            gulp.task('css', function () {
+                var postcss = require('gulp-postcss');
+                return gulp.src('src/**/*.css')
+                    .pipe( postcss([ require('autoprefixer'), require('cssnano') ]) )
+                    .pipe( gulp.dest('build/') );
+            });
+
+      section
+        pre.language-javascript(style='font-size: 14px')
+          code.
+            grunt.initConfig({
+              postcss: {
+                options: {
+                  ...
+                  processors: [
+                    require('pixrem')(), // add fallbacks for rem units
+                    require('autoprefixer')({browsers: 'last 2 versions'}), // add vendor prefixes
+                    require('cssnano')() // minify the result
+                  ]
+                },
+              }
+            });
+      section
+        h2 Autoprefixer
+        h3.small Parse CSS and add vendor prefixes to CSS rules using values from  #[a(href='http://caniuse.com/') Can I Use]
+        div.box
+          pre.language-css(style='font-size: 14px')
+            code.
+              a {
+                  display: flex;
+              }
+
+          pre.language-css(style='font-size: 14px')
+            code.
+              a {
+                  display: -webkit-box;
+                  display: -webkit-flex;
+                  display: -ms-flexbox;
+                  display: flex
+              }
+
+      section
+        h2 CSSNEXT
+        h3.small #[a(href='http://caniuse.com/') cssnext ] is a CSS transpiler that allows you to use the latest CSS.
+        div.box
+          pre.language-css(style='font-size: 14px')
+            code.
+              $line-height: 32px;
+
+              /* vertical rhythm function */
+              @function vr($amount) {
+                @return $line-height * $amount;
+              }
+
+              /* input */
+              .selector { margin-bottom: vr(2) }
+
+          pre.language-css(style='font-size: 14px')
+            code.
+              .selector { margin-bottom: 64px; }
+
+      section
+        h3.small add many more...
+
+      section
+        img(src='images/cssmodules.png',style='height: 50%')
+
+      section
+        blockquote
+          p CSS has fundamental flaws at scale that can be solved by writing styles in JS.
+        
+        h2 @VJEUX, NOVEMBER 2014
+
+      section
+        img(style='height: 100%', src='images/problems_css.jpg', alt='CSS Problem')
+
+      section
+        h2 SERVER RENDERED CSS
+
+      section
+        ul
+          li
+            strike Media queries
+          li
+            strike CSS animations
+          li
+            strike Psuedo classes
+
+      section
+        blockquote
+          p The CSS Modules team felt we could attack the problem head-on — keep everything we liked about CSS, and build upon the good work that the styles-in-JS community was producing.
+        p
+          span #[a(href='http://glenmaddern.com/articles/css-modules') http://glenmaddern.com/articles/css-modules]
+
+      section
+        h2 Step 1. Local by default.
+
+        
+      section
+        div.button-list
+          button.button.submit Submit
+          button.button.delete Delete
+
+      section
+        h3 Before CSS Modules
+
+      section
+        pre.language-css(style='font-size: 14px')
+          code.
+            /* components/submit-button.css */
+            .Button { /* all styles for Normal */ }
+            .Button--disabled { /* overrides for Disabled */ }
+            .Button--error { /* overrides for Error */ }
+            .Button--delete { /* overrides for In Progress */ }
+        pre.language-markup(style='font-size: 14px')
+          code.
+            &lt;button class='Button'&gt; Submit &lt;/button&gt;
+            &lt;button class='Button--delete'&gt; Delete! &lt;/button&gt;
+
+      section
+        h3 With CSS Modules
+
+      section
+        pre.language-css(style='font-size: 14px')
+          code.
+            /* components/submit-button.css */
+            .normal { /* all styles for Normal */ }
+            .disabled { /* all styles for Disabled */ }
+            .error { /* all styles for Error */ }
+            .delete { /* all styles for In Progress */ }
+
+      section
+        pre.language-javascript(style='font-size: 14px')
+          code.
+            /* components/submit-button.js */
+            import styles from './submit-button.css';
+
+            buttonElem.outerHTML = `&lt;button class=${styles.normal}&gt;Submit&lt;/button&gt;`
+
+        pre.language-markup(style='font-size: 14px')
+          code.
+            &lt;button class="components_submit_button__normal__abc5436"&gt;
+              Processing...
+            &lt;/button&gt;
+ 
+      section
+        h3 Step 2. Composition is everything
+      
+      section
+        pre.language-markup(style='font-size: 14px')
+          code.
+            /* BEM Style */
+            innerHTML = ` &lt;button class="Button Button--delete"&gt;`
+
+            /* CSS Modules */
+            innerHTML = ` &lt;button class="${styles.delete}"&gt;`
+
+      section
+        h2 In SASS
+
+      section
+        pre.language-css(style='font-size: 14px')
+          code.
+            .SubmitButton { /* COMMON STYLES */ }
+            .SubmitButton--normal {
+              @extend .SubmitButton;
+              /* BLUE COLOURS */
+            }
+            .SubmitButton--danger {
+              @extend .SubmitButton;
+              /* RED COLOURS */
+            }
+        pre.language-markup(style='font-size: 14px')
+          code.
+            &lt;button class='SubmitButton--normal'&gt; Submit &lt;/button&gt;
+            &lt;button class='SubmitButton--danger'&gt; Delete! &lt;/button&gt;
+      section
+        pre.language-css(style='font-size: 14px')
+          code.
+            .one { }
+            .one:hover { }
+            .context .one { }
+            .one > * { }
+            .two { @extend .one }
+
+      section
+        pre.language-css(style='font-size: 14px')
+          code.
+            .one, .two { }
+            .one:hover, .two:hover { }
+            .context .one, .context .two { }
+            .one > *, .two > * { }
+            .two { }
+
+      section
+        pre.language-css(style='font-size: 14px')
+          code.
+            .one, .two, .three { }
+            .one:hover, .two:hover, .three:hover { }
+            .context .one, .context .two, .context .three { }
+            .one > *, .two > *, .three > * { }
+            .two { }
+            .three { }
+
+      section
+        img(style='height: 80%', src='images/extend.png', alt='CSS Problem')
+
+      section
+        h3 With CSS Modules
+
+      section
+        pre.language-css(style='font-size: 14px')
+          code.
+            .common { /* font-sizes, padding, border-radius */ }
+            .normal { composes: common; /* blue color, light blue background */ }
+            .error { composes: common; /* red color, light red background */ }
+
+      section
+        pre.language-css(style='font-size: 14px')
+          code.
+            .components_submit_button__common__abc5436 { /* font-sizes, padding, border-radius */ }
+            .components_submit_button__normal__def6547 { /* blue color, light blue background */ }
+            .components_submit_button__error__1638bcd { /* red color, light red background */ }
+
+      section
+        pre.language-javascript(style='font-size: 14px')
+          code.
+            import styles from "./submit-button.css"
+            styles: {
+              common: "components_submit_button__common__abc5436",
+              normal: "components_submit_button__common__abc5436 components_submit_button__normal__def6547",
+              error: "components_submit_button__common__abc5436 components_submit_button__error__1638bcd"
+            }
+      section
+        pre.language-markup(style='font-size: 14px')
+          code.
+            &lt;button class="components_submit_button__common__abc5436
+            components_submit_button__normal__def6547"&gt;
+              Submit
+            &lt;/button&gt;
+      
+      section
+        h3 Step 3. Sharing between files
+
+      section
+        pre.language-css(style='font-size: 14px')
+          code.
+            /* colors.css */
+            .primary {
+              color: #720;
+            }
+            .secondary {
+              color: #777;
+            }
+            /* other helper classes... */
+      section
+        pre.language-css(style='font-size: 14px')
+          code.
+            /* submit-button.css */
+            .common { /* font-sizes, padding, border-radius */ }
+            .normal {
+              composes: common;
+              composes: primary from "../shared/colors.css";
+            }
+
+      section
+        pre.language-css(style='font-size: 14px')
+          code.
+            /* colors.css */
+            .shared_colors__primary__fca929 {
+              color: #720;
+            }
+            .shared_colors__secondary__acf292 {
+              color: #777;
+            }
+      section
+        pre.language-css(style='font-size: 14px')
+          code.
+            /* submit-button.css */
+            .components_submit_button__common__abc5436 { /* font-sizes, padding, border-radius */ }
+            .components_submit_button__normal__def6547 {}
+
+      section
+        pre.language-markup(style='font-size: 14px')
+          code.
+            &lt;button class="shared_colors__primary__fca929
+               components_submit_button__common__abc5436 
+               components_submit_button__normal__def6547"&gt;
+              Submit
+            &lt;/button&gt;
+      section
+        h3 Step 4. Single responsibility modules
+      
+      section
+        h3 Plain Old CSS
+        pre.language-css(style='font-size: 14px')
+          code.
+            .some_element {
+              font-size: 1.5rem;
+              color: rgba(0,0,0,0);
+              padding: 0.5rem;
+              box-shadow: 0 0 4px -2px;
+            }
+
+      section
+        h3 SASS
+        pre.language-css(style='font-size: 14px')
+          code.
+            $large-font-size: 1.5rem;
+            $dark-text: rgba(0,0,0,0);
+            $padding-normal: 0.5rem;
+            @mixin subtle-shadow {
+              box-shadow: 0 0 4px -2px;
+            }
+
+            .some_element {
+              @include subtle-shadow;
+              font-size: $large-font-size;
+              color: $dark-text;
+              padding: $padding-normal;
+            }
+
+      section
+        h3 CSS Modules
+        pre.language-css(style='font-size: 14px')
+          code.
+            .element {
+              composes: large from "./typography.css";
+              composes: dark-text from "./colors.css";
+              composes: padding-all-medium from "./layout.css";
+              composes: subtle-shadow from "./effect.css";
+            }
+
+      section
+        pre.language-css(style='font-size: 14px')
+          code.
+            /* this short hand: */
+            .element {
+              composes: padding-large margin-small from "./layout.css";
+            }
+
+            /* is equivalent to: */
+            .element {
+              composes: padding-large from "./layout.css";
+              composes: margin-small from "./layout.css";
+            }
+      section
+        h3 So Why CSS Modules
+
+      section
+        ul
+          li No more conflicts.
+          li Explicit dependencies.
+          li No global scope.
+
+   script(src='build/build.js')
+
